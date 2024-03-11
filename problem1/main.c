@@ -1,3 +1,14 @@
+/*
+Problem Statement 1
+Given 12 monthly sales numbers in an input file. Using functions, generate a tabular sales report
+and also the sales summary report (as shown in the sample output). Your output should include
+the below:
+• Sales report (month and sales in two columns)
+• minimum, maximum, and average of the monthly sales.
+• six-month moving averages.
+• monthly sales report from highest to lowest.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,6 +16,7 @@
 #define NUM_MONTHS 12
 #define BUFFER_SIZE 255
 
+// Function to find the index of the minimum sales value
 int getMinimumSaleIndex(char *months[], double sales[]) {
     double minimumSale = sales[0];
     int minimumSaleIndex = 0;
@@ -19,6 +31,7 @@ int getMinimumSaleIndex(char *months[], double sales[]) {
     return minimumSaleIndex;
 }
 
+// Function to find the index of the maximum sales value
 int getMaximumSaleIndex(char *months[], double sales[]) {
     double maximumSale = sales[0];
     int maximumSaleIndex = 0;
@@ -33,6 +46,7 @@ int getMaximumSaleIndex(char *months[], double sales[]) {
     return maximumSaleIndex;
 }
 
+// Function to calculate the six-month moving average
 double calculateSixMonthAverage(double sales[], int startIndex) {
     double sum = 0.0;
 
@@ -43,6 +57,7 @@ double calculateSixMonthAverage(double sales[], int startIndex) {
     return sum / 6.0;
 }
 
+// Function to generate the monthly sales report
 void generateMonthlySalesReport(FILE *fOutput, char *months[], double sales[]) {
     fprintf(fOutput, "Monthly Sales Report:\n");
     fprintf(fOutput, "%-10s %-10s\n", "Month", "Sales");
@@ -54,6 +69,7 @@ void generateMonthlySalesReport(FILE *fOutput, char *months[], double sales[]) {
     fprintf(fOutput, "\n");
 }
 
+// Function to generate the sales summary report
 void generateSalesSummary(FILE *fOutput, char *months[], double sales[]) {
     int minimumSaleIndex = getMinimumSaleIndex(months, sales);
     int maximumSaleIndex = getMaximumSaleIndex(months, sales);
@@ -64,6 +80,7 @@ void generateSalesSummary(FILE *fOutput, char *months[], double sales[]) {
     fprintf(fOutput, "\n");
 }
 
+// Function to generate the six-month moving average report
 void generateSixMonthAverageReport(FILE *fOutput, char *months[], double sales[]) {
     fprintf(fOutput, "Six-Month Moving Average Report:\n");
 
@@ -81,6 +98,7 @@ void generateSixMonthAverageReport(FILE *fOutput, char *months[], double sales[]
     fprintf(fOutput, "\n");
 }
 
+// Function to generate the sales report sorted from highest to lowest
 void generateSalesReport(FILE *fOutput, char *months[], double sales[]) {
     fprintf(fOutput, "Sales Report (Highest to Lowest):\n");
     fprintf(fOutput, "%-10s %-10s\n", "Month", "Sales");
@@ -91,6 +109,7 @@ void generateSalesReport(FILE *fOutput, char *months[], double sales[]) {
         salesHighToLowIndex[i] = i;
     }
 
+    // Bubble sort to sort sales indices in descending order
     for (int i = 0; i < NUM_MONTHS - 1; i++) {
         for (int j = 0; j < NUM_MONTHS - i - 1; j++) {
             if (sales[salesHighToLowIndex[j]] < sales[salesHighToLowIndex[j + 1]]) {
@@ -101,6 +120,7 @@ void generateSalesReport(FILE *fOutput, char *months[], double sales[]) {
         }
     }
 
+    // Print sorted sales report
     for (int i = 0; i < NUM_MONTHS; i++) {
         fprintf(fOutput, "%-10s $%.2f\n", months[salesHighToLowIndex[i]], sales[salesHighToLowIndex[i]]);
     }
